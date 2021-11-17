@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+    kompose.version: 1.25.0 (a70f80cc)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pcrf
+  name: pcrf
+spec:
+  ports:
+    - name: "3868"
+      port: 3868
+      protocol: UDP
+      targetPort: 3868
+    - name: 3868-tcp
+      port: 3868
+      targetPort: 3868
+    - name: 3868-sctp
+      port: 3868
+      protocol: SCTP
+      targetPort: 3868
+    - name: "5868"
+      port: 5868
+      protocol: UDP
+      targetPort: 5868
+    - name: 5868-tcp
+      port: 5868
+      targetPort: 5868
+    - name: 5868-sctp
+      port: 5868
+      protocol: SCTP
+      targetPort: 5868
+  selector:
+    io.kompose.service: pcrf
+status:
+  loadBalancer: {}

@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+  DNS_IP: 172.22.0.8
+  DOCKER_HOST_IP: 172.22.0.5
+  ENB_IP: 172.22.0.15
+  FHOSS_IP: 172.22.0.11
+  HSS_IP: 172.22.0.3
+  ICSCF_IP: 172.22.0.12
+  MCC: "001"
+  MME_IP: 172.22.0.7
+  MNC: "01"
+  MONGO_IP: 172.22.0.2
+  MYSQL_IP: 172.22.0.10
+  PCRF_IP: 172.22.0.4
+  PCSCF_IP: 172.22.0.14
+  PGW_IP: 172.22.0.6
+  RTPENGINE_IP: 172.22.0.9
+  SCSCF_IP: 172.22.0.13
+  SGW_IP: 172.22.0.5
+  TEST_NETWORK: 172.22.0.0/24
+  WEBUI_IP: 172.22.0.16
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dns-env
+  name: env

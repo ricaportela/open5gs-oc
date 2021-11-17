@@ -1,0 +1,159 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+    kompose.version: 1.25.0 (a70f80cc)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: icscf
+  name: icscf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: icscf
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+        kompose.version: 1.25.0 (a70f80cc)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: icscf
+    spec:
+      containers:
+        - env:
+            - name: COMPONENT_NAME
+              value: icscf-1
+            - name: DNS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: DNS_IP
+                  name: env
+            - name: DOCKER_HOST_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: DOCKER_HOST_IP
+                  name: env
+            - name: ENB_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: ENB_IP
+                  name: env
+            - name: FHOSS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: FHOSS_IP
+                  name: env
+            - name: HSS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: HSS_IP
+                  name: env
+            - name: ICSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: ICSCF_IP
+                  name: env
+            - name: MCC
+              valueFrom:
+                configMapKeyRef:
+                  key: MCC
+                  name: env
+            - name: MME_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MME_IP
+                  name: env
+            - name: MNC
+              valueFrom:
+                configMapKeyRef:
+                  key: MNC
+                  name: env
+            - name: MONGO_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_IP
+                  name: env
+            - name: MYSQL_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_IP
+                  name: env
+            - name: PCRF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PCRF_IP
+                  name: env
+            - name: PCSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PCSCF_IP
+                  name: env
+            - name: PGW_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PGW_IP
+                  name: env
+            - name: RTPENGINE_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: RTPENGINE_IP
+                  name: env
+            - name: SCSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: SCSCF_IP
+                  name: env
+            - name: SGW_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: SGW_IP
+                  name: env
+            - name: TEST_NETWORK
+              valueFrom:
+                configMapKeyRef:
+                  key: TEST_NETWORK
+                  name: env
+            - name: WEBUI_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: WEBUI_IP
+                  name: env
+          image: ricaportela/docker_kamailio
+          name: icscf
+          ports:
+            - containerPort: 3869
+              protocol: UDP
+            - containerPort: 3869
+            - containerPort: 4060
+              protocol: UDP
+            - containerPort: 4060
+          resources: {}
+          volumeMounts:
+            - mountPath: /mnt/icscf
+              name: icscf-claim0
+            - mountPath: /etc/timezone
+              name: icscf-claim1
+              readOnly: true
+            - mountPath: /etc/localtime
+              name: icscf-claim2
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: icscf-claim0
+          persistentVolumeClaim:
+            claimName: icscf-claim0
+        - name: icscf-claim1
+          persistentVolumeClaim:
+            claimName: icscf-claim1
+            readOnly: true
+        - name: icscf-claim2
+          persistentVolumeClaim:
+            claimName: icscf-claim2
+            readOnly: true
+status: {}

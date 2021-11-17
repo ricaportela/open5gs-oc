@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+    kompose.version: 1.25.0 (a70f80cc)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: fhoss
+  name: fhoss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: fhoss
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+        kompose.version: 1.25.0 (a70f80cc)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: fhoss
+    spec:
+      containers:
+        - env:
+            - name: DNS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: DNS_IP
+                  name: env
+            - name: DOCKER_HOST_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: DOCKER_HOST_IP
+                  name: env
+            - name: ENB_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: ENB_IP
+                  name: env
+            - name: FHOSS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: FHOSS_IP
+                  name: env
+            - name: HSS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: HSS_IP
+                  name: env
+            - name: ICSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: ICSCF_IP
+                  name: env
+            - name: MCC
+              valueFrom:
+                configMapKeyRef:
+                  key: MCC
+                  name: env
+            - name: MME_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MME_IP
+                  name: env
+            - name: MNC
+              valueFrom:
+                configMapKeyRef:
+                  key: MNC
+                  name: env
+            - name: MONGO_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_IP
+                  name: env
+            - name: MYSQL_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_IP
+                  name: env
+            - name: PCRF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PCRF_IP
+                  name: env
+            - name: PCSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PCSCF_IP
+                  name: env
+            - name: PGW_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PGW_IP
+                  name: env
+            - name: RTPENGINE_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: RTPENGINE_IP
+                  name: env
+            - name: SCSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: SCSCF_IP
+                  name: env
+            - name: SGW_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: SGW_IP
+                  name: env
+            - name: TEST_NETWORK
+              valueFrom:
+                configMapKeyRef:
+                  key: TEST_NETWORK
+                  name: env
+            - name: WEBUI_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: WEBUI_IP
+                  name: env
+          image: ricaportela/docker_fhoss
+          name: fhoss
+          ports:
+            - containerPort: 8080
+            - containerPort: 3868
+              protocol: UDP
+            - containerPort: 3868
+          resources: {}
+          volumeMounts:
+            - mountPath: /mnt/fhoss
+              name: fhoss-claim0
+            - mountPath: /etc/timezone
+              name: fhoss-claim1
+              readOnly: true
+            - mountPath: /etc/localtime
+              name: fhoss-claim2
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: fhoss-claim0
+          persistentVolumeClaim:
+            claimName: fhoss-claim0
+        - name: fhoss-claim1
+          persistentVolumeClaim:
+            claimName: fhoss-claim1
+            readOnly: true
+        - name: fhoss-claim2
+          persistentVolumeClaim:
+            claimName: fhoss-claim2
+            readOnly: true
+status: {}

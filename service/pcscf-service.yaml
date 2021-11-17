@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+    kompose.version: 1.25.0 (a70f80cc)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pcscf
+  name: pcscf
+spec:
+  ports:
+    - name: "3871"
+      port: 3871
+      protocol: UDP
+      targetPort: 3871
+    - name: 3871-tcp
+      port: 3871
+      targetPort: 3871
+    - name: "5060"
+      port: 5060
+      targetPort: 5060
+    - name: 5060-udp
+      port: 5060
+      protocol: UDP
+      targetPort: 5060
+    # - name: "0"
+    #   port: 0
+    #   targetPort: 0
+    # - name: 0-udp
+    #   port: 0
+    #   protocol: UDP
+    #   targetPort: 0
+    # - name: 0-tcp
+    #   port: 0
+    #   targetPort: 0
+    # - name: 0-udp
+    #   port: 0
+    #   protocol: UDP
+    #   targetPort: 0
+  selector:
+    io.kompose.service: pcscf
+status:
+  loadBalancer: {}

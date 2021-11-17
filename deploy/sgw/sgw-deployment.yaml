@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+    kompose.version: 1.25.0 (a70f80cc)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sgw
+  name: sgw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: sgw
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f /home/ubuntu/docker_open5gs/docker-compose.yaml
+        kompose.version: 1.25.0 (a70f80cc)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: sgw
+    spec:
+      containers:
+        - env:
+            - name: COMPONENT_NAME
+              value: sgw-1
+            - name: DNS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: DNS_IP
+                  name: env
+            - name: DOCKER_HOST_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: DOCKER_HOST_IP
+                  name: env
+            - name: ENB_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: ENB_IP
+                  name: env
+            - name: FHOSS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: FHOSS_IP
+                  name: env
+            - name: HSS_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: HSS_IP
+                  name: env
+            - name: ICSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: ICSCF_IP
+                  name: env
+            - name: MCC
+              valueFrom:
+                configMapKeyRef:
+                  key: MCC
+                  name: env
+            - name: MME_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MME_IP
+                  name: env
+            - name: MNC
+              valueFrom:
+                configMapKeyRef:
+                  key: MNC
+                  name: env
+            - name: MONGO_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_IP
+                  name: env
+            - name: MYSQL_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_IP
+                  name: env
+            - name: PCRF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PCRF_IP
+                  name: env
+            - name: PCSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PCSCF_IP
+                  name: env
+            - name: PGW_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: PGW_IP
+                  name: env
+            - name: RTPENGINE_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: RTPENGINE_IP
+                  name: env
+            - name: SCSCF_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: SCSCF_IP
+                  name: env
+            - name: SGW_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: SGW_IP
+                  name: env
+            - name: TEST_NETWORK
+              valueFrom:
+                configMapKeyRef:
+                  key: TEST_NETWORK
+                  name: env
+            - name: WEBUI_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: WEBUI_IP
+                  name: env
+          image: ricaportela/docker_open5gs
+          name: sgw
+          ports:
+            - containerPort: 2123
+              protocol: UDP
+            - containerPort: 2152
+              protocol: UDP
+          resources: {}
+          volumeMounts:
+            - mountPath: /mnt/sgw
+              name: sgw-claim0
+            - mountPath: /open5gs/install/var/log/open5gs
+              name: sgw-claim1
+            - mountPath: /etc/timezone
+              name: sgw-claim2
+              readOnly: true
+            - mountPath: /etc/localtime
+              name: sgw-claim3
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: sgw-claim0
+          persistentVolumeClaim:
+            claimName: sgw-claim0
+        - name: sgw-claim1
+          persistentVolumeClaim:
+            claimName: sgw-claim1
+        - name: sgw-claim2
+          persistentVolumeClaim:
+            claimName: sgw-claim2
+            readOnly: true
+        - name: sgw-claim3
+          persistentVolumeClaim:
+            claimName: sgw-claim3
+            readOnly: true
+status: {}
